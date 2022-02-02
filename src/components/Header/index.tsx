@@ -1,3 +1,20 @@
+ /* eslint-disable */ 
+// eslint-disable-next-line
+
+import styles from './header.module.scss'
+
 export default function Header() {
-  // TODO
+  
+  return (
+
+    <header> 
+      <div className={styles.Container}>
+        <img src="/images/logo.png" alt="traveling"/> 
+
+      </div>
+    </header>
+
+  )
+
+
 }
