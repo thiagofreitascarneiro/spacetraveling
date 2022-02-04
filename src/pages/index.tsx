@@ -42,7 +42,7 @@ export default function Home() {
       <title>Document</title>
     </head>
     <body>
-      <p>Hellow Bob</p>
+      <p>Hello Bob</p>
     </body>
     </html>
    
