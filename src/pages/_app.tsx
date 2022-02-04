@@ -1,7 +1,8 @@
  /* eslint-disable */ 
-// eslint-disable-next-line
+
 
 import { AppProps } from 'next/app';
+import Home from '.';
 import Header from '../components/Header';
 import '../styles/globals.scss';
 
@@ -12,6 +13,8 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     <>
       <Header />
       <Component {...pageProps} />
+      <Home />
+      
     </>
   )
 }

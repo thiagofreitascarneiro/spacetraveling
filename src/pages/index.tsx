@@ -1,4 +1,10 @@
+/* eslint-disable */ 
+// eslint-disable-next-line
+
 import { GetStaticProps } from 'next';
+
+// se refere as propriedades que o componente pode receber
+import { AppProps } from 'next/app';
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -24,13 +30,28 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-// export default function Home() {
-//   // TODO
-// }
+export default function Home() {
+  const todo = ''
+
+  return(
+    <html lang="en">
+    <head>
+      <meta charSet="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+    </head>
+    <body>
+      <p>Hellow Bob</p>
+    </body>
+    </html>
+   
+  )
+}
 
 // export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient();
-//   // const postsResponse = await prismic.query(TODO);
+//   const prismic = getPrismicClient();
+//   const postsResponse = await prismic.query('');
 
-//   // TODO
+//   const todo = ''
 // };
