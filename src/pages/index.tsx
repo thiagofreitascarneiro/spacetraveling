@@ -11,6 +11,9 @@ import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
+import Head from 'next/head';
+
+
 interface Post {
   uid?: string;
   first_publication_date: string | null;
@@ -34,18 +37,18 @@ export default function Home() {
   const todo = ''
 
   return(
-    <html lang="en">
-    <head>
-      <meta charSet="UTF-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Document</title>
-    </head>
-    <body>
-      <p>Hello Bob</p>
-    </body>
-    </html>
-   
+    <>  
+      <main className={styles.Container}>
+        <div className={styles.PostPage}>
+            <a>
+              <h1><strong>Como utilizar Hooks </strong></h1>
+              <time>5 de feveireiro de 2022</time>
+              <p>Pensando em sincronização 
+                em vez de ciclos de vida.</p>
+            </a>
+        </div>
+      </main>
+    </>
   )
 }
 

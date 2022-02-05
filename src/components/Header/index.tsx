@@ -9,7 +9,7 @@ export default function Header() {
 
     <header> 
       <div className={styles.Container}>
-        <img src="/images/Logo.svg" alt="Project"/>
+        <img src="/images/Logo.svg" alt="logo"/>
 
       </div>
     </header>
