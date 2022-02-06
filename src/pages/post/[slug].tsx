@@ -1,6 +1,7 @@
  /* eslint-disable */ 
 
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Head from 'next/head';
 
 import { getPrismicClient } from '../../services/prismic';
 
@@ -30,7 +31,7 @@ interface PostProps {
 
 export default function Post() {
   const todo = ''
-}
+
 
 export const getStaticPaths = async () => {
   const prismic = getPrismicClient();
@@ -45,3 +46,25 @@ export const getStaticProps = async context => {
 
   const todo = ''
 };
+
+return (
+  <>  
+    <Head>
+        
+    </Head>
+
+    <main className={styles.container}>
+        <div className={styles.posts}>
+            <a>
+              <time> 06 de fev</time>
+              <strong>titulo</strong>
+              <p>conteudo</p>
+            </a> 
+        </div>
+    </main>
+
+  
+  
+  </>
+
+)

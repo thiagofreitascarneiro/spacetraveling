@@ -12,6 +12,7 @@ import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
 import Head from 'next/head';
+import Prismic from '@prismicio/client';
 
 
 interface Post {
@@ -52,9 +53,15 @@ export default function Home() {
   )
 }
 
-// export const getStaticProps = async () => {
-//   const prismic = getPrismicClient();
-//   const postsResponse = await prismic.query('');
+export const getStaticProps = async () => {
+  const prismic = getPrismicClient();
 
-//   const todo = ''
-// };
+  const postsResponse = await prismic.query([
+  Prismic.predicates.at('document.type', 'post')
+], {
+    fetch: ['post.title', 'post.content'],
+    pageSize: 20,
+})
+
+  const todo = ''
+};
