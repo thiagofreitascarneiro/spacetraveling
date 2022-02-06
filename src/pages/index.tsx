@@ -53,7 +53,7 @@ export default function Home() {
   )
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
 
   const postsResponse = await prismic.query([
@@ -63,5 +63,12 @@ export const getStaticProps = async () => {
     pageSize: 20,
 })
 
-  const todo = ''
+  console.log(JSON.stringify(postsResponse, null, 2))
+  const post = ''
+
+  return {
+    props: {
+      post
+    }
+  }
 };
