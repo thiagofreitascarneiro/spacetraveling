@@ -23,6 +23,10 @@ import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom'
 import { getPrismicClient } from '../services/prismic';
 
+import { AiOutlineCalendar } from 'react-icons/ai';
+import { MdOutlinePersonOutline } from 'react-icons/md'
+import { useState } from 'react';
+
 
 
 interface Post {
@@ -48,6 +52,9 @@ interface HomeProps {
 
 
 export default function Home({ posts }: HomeProps ) {
+
+  const [pageSize, setPagesize] = useState(5)
+
   return(
     <>  
       <main className={styles.Container}>
@@ -55,9 +62,11 @@ export default function Home({ posts }: HomeProps ) {
          { posts?.map(post => (
           <a key={post.uid}>
             <h1><strong>{post.data.title} </strong></h1>
-            <time>{post.first_publication_date}</time>
-            <p>{post.data.author}</p>
-            <p>{post.subtitle}</p>
+            <p className={styles.Subtitle}>{post.data.subtitle}</p>
+            <br/>
+            <time> <AiOutlineCalendar/> {post.first_publication_date}</time>
+            <p className={styles.Author}> <MdOutlinePersonOutline /> {post.data.author}</p>
+            
             <br/>
             <br/>
           </a>
@@ -65,9 +74,11 @@ export default function Home({ posts }: HomeProps ) {
          )) 
          
          }
-            
+          <h4 className={styles.LoadPost }>Carregar mais posts</h4>
         </div>
+        
       </main>
+      
     </>
   )
 }
@@ -79,8 +90,9 @@ export const getStaticProps: GetStaticProps = async () => {
   Prismic.predicates.at('document.type', 'post')
 ], {
     fetch: ['posts.title', 'posts.subtitle','posts.author'],
-    pageSize: 2,
+    pageSize: 5,
 })
+
 
   console.log(JSON.stringify(postsResponse, null, 2))
   
@@ -98,12 +110,12 @@ export const getStaticProps: GetStaticProps = async () => {
           //subtitle: post.data.content.find(content => content.heading.type === 'paragraph')?.text ?? '',
           author: post.data.author? post.data.author: '' as string,
         },
-    }
-    
-  })
+    }  
+  }
+     
+  )
 
   console.log('posts11234', posts)
-  
   return {
     props: {
       posts
