@@ -23,6 +23,8 @@ import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom'
 import { getPrismicClient } from '../services/prismic';
 
+
+
 interface Post {
   slug: string;
   uid?: string;
@@ -44,18 +46,22 @@ interface HomeProps {
 }
 
 
+
 export default function Home({ posts }: HomeProps ) {
   return(
     <>  
       <main className={styles.Container}>
         <div className={styles.PostPage}>
-         { posts.map(post => (
-          <a key={post.slug}>
-            <h1><strong>{post.title} </strong></h1>
-            <time>{post.updatedAt}</time>
-            <p>{post.excerpt}</p>
+         { posts?.map(post => (
+          <a key={post.uid}>
+            <h1><strong>{post.data.title} </strong></h1>
+            <time>{post.first_publication_date}</time>
+            <p>{post.data.author}</p>
+            <p>{post.subtitle}</p>
+            <br/>
+            <br/>
           </a>
-
+          
          )) 
          
          }
@@ -72,8 +78,8 @@ export const getStaticProps: GetStaticProps = async () => {
   const postsResponse = await prismic.query([
   Prismic.predicates.at('document.type', 'post')
 ], {
-    fetch: ['post.title', 'post.content'],
-    pageSize: 5,
+    fetch: ['posts.title', 'posts.subtitle','posts.author'],
+    pageSize: 2,
 })
 
   console.log(JSON.stringify(postsResponse, null, 2))
@@ -81,11 +87,16 @@ export const getStaticProps: GetStaticProps = async () => {
   const posts = postsResponse.results.map(post => {
       return {
         uid: post.uid,
-        first_publication_date: post.first_publication_date,
+        first_publication_date: new Date(post.first_publication_date).toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        }),
         data: {
           title: post.data.title as string,
-          subtitle: post.data.content.heading.find(content => content.type === 'paragraph')?.text ?? '',
-          author: post.data.author as string,
+          subtitle: post.data.subtitle ? post.data.subtitle: '' as string,
+          //subtitle: post.data.content.find(content => content.heading.type === 'paragraph')?.text ?? '',
+          author: post.data.author? post.data.author: '' as string,
         },
     }
     
