@@ -76,7 +76,7 @@ export default function Home({ posts }: HomeProps ) {
          }
           <h4 className={styles.LoadPost }>Carregar mais posts</h4>
         </div>
-        
+              
       </main>
       
     </>
