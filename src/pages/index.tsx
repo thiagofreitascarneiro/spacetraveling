@@ -53,7 +53,12 @@ interface HomeProps {
 
 export default function Home({ posts }: HomeProps ) {
 
-  const [pageSize, setPagesize] = useState(5)
+  const [pageSize, setPagesize] = useState(0);
+  const [contentPost, setContentPost] = useState([])
+
+  function morePage() {
+    setPagesize(pageSize + 1)
+  }
 
   return(
     <>  
@@ -72,9 +77,10 @@ export default function Home({ posts }: HomeProps ) {
           </a>
           
          )) 
-         
          }
-          <h4 className={styles.LoadPost }>Carregar mais posts</h4>
+          <h4 className={styles.LoadPost }
+              onClick={() => morePage()}
+          >Carregar mais posts</h4>
         </div>
               
       </main>
@@ -92,6 +98,7 @@ export const getStaticProps: GetStaticProps = async () => {
     fetch: ['posts.title', 'posts.subtitle','posts.author'],
     pageSize: 5,
 })
+
 
 
   console.log(JSON.stringify(postsResponse, null, 2))
@@ -112,8 +119,9 @@ export const getStaticProps: GetStaticProps = async () => {
         },
     }  
   }
-     
+  
   )
+  setContentPost(posts)
 
   console.log('posts11234', posts)
   return {
