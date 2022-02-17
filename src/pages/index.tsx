@@ -25,7 +25,7 @@ import { getPrismicClient } from '../services/prismic';
 
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 
@@ -54,11 +54,21 @@ interface HomeProps {
 export default function Home({ posts }: HomeProps ) {
 
   const [pageSize, setPagesize] = useState(0);
-  const [contentPost, setContentPost] = useState([])
+  const [contentPost, setContentPost] = useState<Post[]>([])
 
   function morePage() {
     setPagesize(pageSize + 1)
+    
   }
+
+  useEffect(() => {
+    setContentPost(posts)
+    
+  }, []);
+
+  console.log('OOOOOOO', contentPost)
+
+  
 
   return(
     <>  
@@ -121,7 +131,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
   
   )
-  setContentPost(posts)
+  
 
   console.log('posts11234', posts)
   return {
@@ -130,3 +140,5 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   }
 };
+
+
