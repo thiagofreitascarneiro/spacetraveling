@@ -66,6 +66,7 @@ export default function Home({ posts }: HomeProps ) {
     
   }, []);
 
+
   console.log('OOOOOOO', contentPost)
 
   
@@ -88,12 +89,12 @@ export default function Home({ posts }: HomeProps ) {
           
          )) 
          }
-          <h4 className={styles.LoadPost }
-              onClick={() => morePage()}
-          >Carregar mais posts</h4>
+         
         </div>
-              
+        <h4 className={styles.LoadPost }
+          >Carregar mais posts</h4>
       </main>
+      
       
     </>
   )

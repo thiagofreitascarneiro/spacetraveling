@@ -39,6 +39,13 @@
         /* Heading */
         cursor: pointer;
         color: #F8F8F8;
+        transition: all 0.2s ease-in;
+
+        &:hover {
+            color: #FF57B2;
+            
+          }
+          
 
     }
 
@@ -55,11 +62,8 @@
 
     .Author {
          position: relative;
-         left: 25%;
-         //right:62.43%;
-         //top: 81.48%;
-         bottom: 0%;
-         //float: right;
+         left: 25%;   
+         bottom: 0%;  
          top: -12px; 
          color: #D7D7D7;
      }
@@ -88,10 +92,10 @@
 
 .LoadPost {
         position: absolute;
-        //width: 176px;
-        //height: 22px;
-        //left: 368px;
-        //top: 966px;
+        width: 176px;
+        height: 22px;
+        left: 368px;
+        top: 900px;
 
         font-family: Inter;
         font-style: normal;
@@ -126,23 +130,3 @@
     }
 }
 
-
-// h1:after{
-//     content: "";
-//     position: absolute;
-//     background-color: #FF57B2;
-//     height: 3px;
-//     width: 100%;
-//     left: 0;
-//     bottom: -10px;
-//     transition: 0.3s;
-
-// }
-
-// h1:hover{
-//     color:ffffff;
-// }
-
-// h1:hover:after {
-//     width: 100%
-// }LoadPost
