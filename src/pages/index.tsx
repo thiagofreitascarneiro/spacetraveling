@@ -27,7 +27,10 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md'
 import { useEffect, useState } from 'react';
 
-
+import format from 'date-fns/format';
+import ptBR from 'date-fns/locale/pt-BR';
+import id from 'date-fns/esm/locale/id/index.js';
+import Post from './post/[slug]';
 
 interface Post {
   slug: string;
@@ -46,41 +49,54 @@ interface PostPagination {
 }
 
 interface HomeProps {
+  posts: Post[];
   postsPagination: PostPagination;
 }
 
 
 
-export default function Home({ posts }: HomeProps ) {
-
-  const [pageSize, setPagesize] = useState(0);
-  const [contentPost, setContentPost] = useState<Post[]>([])
-
-  function morePage() {
-    setPagesize(pageSize + 1)
-    
-  }
-
-  useEffect(() => {
-    setContentPost(posts)
-    
-  }, []);
-
-
-  console.log('OOOOOOO', contentPost)
+export default function Home({ postsPagination }: HomeProps ) {
 
   
+  const [contentPost, setContentPost] = useState<PostPagination>(postsPagination)
+  
+
+   function handleNextPage() {
+     fetch(contentPost.next_page)
+      .then(response => response.json())
+      .then(responseData => setContentPost({
+        next_page: responseData.next_page,
+        results: [
+          ...contentPost.results,
+          ...responseData?.results.map(post => {
+            return {
+              uid: post.uid,
+              data: {
+                title: post.data.title,
+                subtitle: post.data.subtitle,
+                author: post.data.author
+              },
+              first_publication_date: post.first_publication_date
+            }
+          })
+        ]
+      }))
+      .catch(err => console.log(err.message))
+  }
+ 
 
   return(
     <>  
       <main className={styles.Container}>
         <div className={styles.PostPage}>
-         { posts?.map(post => (
+         { contentPost?.results.map(post => (
           <a key={post.uid}>
             <h1><strong>{post.data.title} </strong></h1>
             <p className={styles.Subtitle}>{post.data.subtitle}</p>
             <br/>
-            <time> <AiOutlineCalendar/> {post.first_publication_date}</time>
+            <time> <AiOutlineCalendar/> 
+            {format(new Date(post.first_publication_date), 'dd MMM yyyy', { locale: ptBR })}
+            </time>
             <p className={styles.Author}> <MdOutlinePersonOutline /> {post.data.author}</p>
             
             <br/>
@@ -91,8 +107,15 @@ export default function Home({ posts }: HomeProps ) {
          }
          
         </div>
-        <h4 className={styles.LoadPost }
-          >Carregar mais posts</h4>
+            
+       
+        {contentPost?.next_page && 
+        <button 
+          onClick={handleNextPage} 
+          className={styles.LoadPost} 
+          type="button">Carregar mais posts
+        </button>}
+
       </main>
       
       
@@ -100,46 +123,50 @@ export default function Home({ posts }: HomeProps ) {
   )
 }
 
+
+
 export const getStaticProps: GetStaticProps = async () => {
+  
   const prismic = getPrismicClient();
 
   const postsResponse = await prismic.query([
-  Prismic.predicates.at('document.type', 'post')
+  Prismic.Predicates.at('document.type', 'post')
 ], {
     fetch: ['posts.title', 'posts.subtitle','posts.author'],
-    pageSize: 5,
+    pageSize:4,
 })
 
 
+let posts: Post[] = []
 
   console.log(JSON.stringify(postsResponse, null, 2))
   
-  const posts = postsResponse.results.map(post => {
+
+  if (postsResponse?.results) {
+   posts = postsResponse.results.map(post => {
       return {
         uid: post.uid,
-        first_publication_date: new Date(post.first_publication_date).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric'
-        }),
+        first_publication_date: post.first_publication_date,
         data: {
           title: post.data.title as string,
           subtitle: post.data.subtitle ? post.data.subtitle: '' as string,
-          //subtitle: post.data.content.find(content => content.heading.type === 'paragraph')?.text ?? '',
           author: post.data.author? post.data.author: '' as string,
         },
-    }  
-  }
+    };  
+  })
+}
   
-  )
-  
+  const postsPagination = {
+    next_page: postsResponse?.next_page ?? null,
+    results: posts,
+  };
 
   console.log('posts11234', posts)
   return {
     props: {
-      posts
+      postsPagination,
+      }
     }
-  }
 };
 
 
