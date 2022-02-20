@@ -144,7 +144,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 let posts: Post[] = []
 
-  console.log(JSON.stringify(postsResponse, null, 2))
+ // console.log(JSON.stringify(postsResponse, null, 2))
   
 
   if (postsResponse?.results) {
@@ -166,7 +166,7 @@ let posts: Post[] = []
     results: posts,
   };
 
-  console.log('posts11234', posts)
+  
   return {
     props: {
       postsPagination,
