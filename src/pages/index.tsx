@@ -17,16 +17,19 @@ import styles from './home.module.scss';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { GetStaticProps } from 'next';
+import  Link  from 'next/link'
 
 //Prismic
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom'
 import { getPrismicClient } from '../services/prismic';
 
+//React
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md'
 import { useEffect, useState } from 'react';
 
+//Others
 import format from 'date-fns/format';
 import ptBR from 'date-fns/locale/pt-BR';
 import id from 'date-fns/esm/locale/id/index.js';
@@ -90,19 +93,20 @@ export default function Home({ postsPagination }: HomeProps ) {
       <main className={styles.Container}>
         <div className={styles.PostPage}>
          { contentPost?.results.map(post => (
-          <a key={post.uid}>
-            <h1><strong>{post.data.title} </strong></h1>
-            <p className={styles.Subtitle}>{post.data.subtitle}</p>
-            <br/>
-            <time> <AiOutlineCalendar/> 
-            {format(new Date(post.first_publication_date), 'dd MMM yyyy', { locale: ptBR })}
-            </time>
-            <p className={styles.Author}> <MdOutlinePersonOutline /> {post.data.author}</p>
-            
-            <br/>
-            <br/>
-          </a>
-          
+           <Link href={`/post/${post.slug}`}>
+              <a key={post.uid}>
+                <h1><strong>{post.data.title} </strong></h1>
+                <p className={styles.Subtitle}>{post.data.subtitle}</p>
+                <br/>
+                <time> <AiOutlineCalendar/> 
+                {format(new Date(post.first_publication_date), 'dd MMM yyyy', { locale: ptBR })}
+                </time>
+                <p className={styles.Author}> <MdOutlinePersonOutline /> {post.data.author}</p>
+                
+                <br/>
+                <br/>
+              </a>
+           </Link>
          )) 
          }
          
@@ -110,11 +114,12 @@ export default function Home({ postsPagination }: HomeProps ) {
             
        
         {contentPost?.next_page && 
-        <button 
-          onClick={handleNextPage} 
-          className={styles.LoadPost} 
-          type="button">Carregar mais posts
-        </button>}
+          <button 
+            onClick={handleNextPage} 
+            className={styles.LoadPost} 
+            type="button">Carregar mais posts
+          </button>
+        }
 
       </main>
       
