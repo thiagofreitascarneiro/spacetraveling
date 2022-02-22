@@ -1,4 +1,5 @@
  /* eslint-disable */ 
+
 //Next
 import { GetStaticPaths, GetStaticProps } from 'next';
 
@@ -14,6 +15,8 @@ import styles from './post.module.scss';
 
 //React
 import { useEffect, useState } from 'react';
+import { AiOutlineCalendar } from 'react-icons/ai';
+import { MdOutlinePersonOutline } from 'react-icons/md'
 
 interface Post {
   first_publication_date: string | null;
@@ -36,9 +39,28 @@ interface PostProps {
   post: Post;
 }
 
-export default function Post(): PostProps {
-  // const = Todo
-}
+ export default function Post(){
+
+return (
+      <>
+        <main className={styles.Container}>
+          <div className={styles.posts}>
+            <h1>Criando um app CRA do zero</h1>
+            <time> <AiOutlineCalendar/> 
+
+            </time>
+
+          
+
+          </div>
+        </main>
+        </>
+
+
+        )
+        };
+
+
 export const getStaticPaths = async () => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query([

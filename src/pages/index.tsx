@@ -6,8 +6,6 @@
 // se refere as propriedades que o componente pode receber
 
 
-
-
 // SASS
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
@@ -92,7 +90,7 @@ export default function Home({ postsPagination }: HomeProps ) {
     <>  
       <main className={styles.Container}>
         <div className={styles.PostPage}>
-         { contentPost?.results.map(post => (
+         {contentPost?.results.map(post => (
            <Link href={`/post/${post.slug}`}>
               <a key={post.uid}>
                 <h1><strong>{post.data.title} </strong></h1>
@@ -170,7 +168,8 @@ let posts: Post[] = []
   return {
     props: {
       postsPagination,
-      }
+      },
+      redirect: 60 * 30 // 30 minutos
     }
 };
 
