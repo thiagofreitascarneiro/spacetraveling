@@ -47,9 +47,9 @@ return (
           <div className={styles.posts}>
             <h1>Criando um app CRA do zero</h1>
             <time> <AiOutlineCalendar/> 
-
+                  calendar
             </time>
-
+            <p>author <MdOutlinePersonOutline /> </p>
           
 
           </div>
@@ -61,7 +61,7 @@ return (
         };
 
 
-export const getStaticPaths = async () => {
+export const getStaticPaths : GetStaticPaths = async () => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query([
     Prismic.Predicates.at('document.type', 'post')
@@ -69,26 +69,34 @@ export const getStaticPaths = async () => {
     fetch: ['posts.title', 'post.banner', 'posts.author', 'post.content'],
     pageSize:1,
   });
+
+  return {
+    paths: [
+      
+
+    ],
+    fallback: 'blocking'
   
-  //console.log(JSON.stringify(postsResponse, null, 2))
+  }
+  console.log('gestaticprops', JSON.stringify(postsResponse, null, 2))
   // const todo = ''
 };
 
-export const getStaticProps = async ({context}) => {
+export const getStaticProps = async ({params}) => {
+
+  const { slug } = params;
+
   const prismic = getPrismicClient();
-  const { slug } = context;
   const response = await prismic.getByUID('post', String(slug), {});
 
-  const post = {
-    slug, 
+  const post = { 
     first_publication_date: response?.data.first_publication_date?? null,
     data: {
       title: response?.data.title,
       subtitle: response?.data.subtitle,
       author: response?.data.author,
       banner: response?.data.banner,
-      content: RichText.asHtml(response?.data.content)
-      
+      content: RichText.asHtml(response?.data.content)   
     },
   };
   return { 

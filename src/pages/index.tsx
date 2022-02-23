@@ -61,6 +61,7 @@ export default function Home({ postsPagination }: HomeProps ) {
   
   const [contentPost, setContentPost] = useState<PostPagination>(postsPagination)
   
+  console.log('hellow', contentPost)
 
    function handleNextPage() {
      fetch(contentPost.next_page)
@@ -146,7 +147,7 @@ let posts: Post[] = []
   
 
   if (postsResponse?.results) {
-   posts = postsResponse.results.map(post => {
+   posts= postsResponse.results.map(post => {
       return {
         uid: post.uid,
         first_publication_date: post.first_publication_date,
