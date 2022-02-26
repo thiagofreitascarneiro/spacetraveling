@@ -18,7 +18,13 @@ import styles from './post.module.scss';
 
 import { useEffect, useState } from 'react';
 import { AiOutlineCalendar } from 'react-icons/ai';
+import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import { MdOutlinePersonOutline } from 'react-icons/md'
+
+
+// Outros
+import ptBR from 'date-fns/locale/pt-BR';
+import format from 'date-fns/format';
 
 interface Post {
   uid: string;
@@ -46,22 +52,73 @@ interface PostProps {
  export default function Post({ post }: PostProps): JSX.Element {
   const router = useRouter();
 
+  function timePost(content:any): string {
+    const words = content
+      .map((item:any) => {
+        return RichText.asText(item.body).split(' ');
+      })
+      .reduce((acc, curr) => [...curr, ...acc], [])
+      .filter(i => i !== '');
+
+    const min = Math.ceil(words.length / 200);
+
+    return `${min} min`;
+  }
+
+
 return (
       <>
+      {router.isFallback ? (
+        <div>Carregando...</div>
+      ) : (
         <main className={styles.Container}>
           <div className={styles.posts}>
-            <h1>Criando um app CRA do zero</h1>
-            <time> <AiOutlineCalendar/> 
-                  calendar
-            </time>
-            <p>author <MdOutlinePersonOutline /> </p>
-          
+            <div className={styles.banner}>
+              <img src={post.data.banner.url} alt="banner" />
+            </div>
+            <div>
+              <h2>{post.data.title}</h2>
+              <div className={styles.commonStyles}>
+                <time>
+                  <FiCalendar />
+
+                  {format(
+                    new Date(post.first_publication_date),
+                    'dd MMM yyyy',
+                    {
+                      locale: ptBR,
+                    }
+                  )}
+                </time>
+                <span>
+                  <FiUser />
+                  {post.data.author}
+                </span>
+                <time>
+                  <FiClock />
+                  {timePost(post.data.content)}
+                </time>
+              </div>
+              {post.data.content.map(content => {
+                return (
+                  <div key={content.heading}>
+                    <h3>{content.heading}</h3>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: Array.isArray(content.body)
+                          ? RichText.asHtml(content.body)
+                          : content.body,
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
 
           </div>
         </main>
+         )}
         </>
-
-
         )
         };
 
@@ -85,7 +142,7 @@ export const getStaticPaths : GetStaticPaths = async () => {
   
   }
   
-  console.log('gestaticprops', JSON.stringify(posts, null, 2))
+  
 };
 
 

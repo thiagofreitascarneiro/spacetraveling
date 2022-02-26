@@ -91,7 +91,8 @@ export default function Home({ postsPagination }: HomeProps ) {
     <>  
       <main className={styles.Container}>
         <div className={styles.PostPage}>
-         {contentPost?.results.map(post => (
+         {contentPost &&
+         contentPost.results.map(post => (
            <Link href={`/post/${post.slug}`}>
               <a key={post.uid}>
                 <h1><strong>{post.data.title} </strong></h1>
